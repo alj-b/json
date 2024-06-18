@@ -1,0 +1,697 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "FastAPI",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/api/v1/users/": {
+            "put": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Update User Location",
+                "description": "Updates the location of a user in the database.\n\nParameters:\nreq (user_schemas.UpdateUserDto): The update location request data.\nsession (Session, optional): The database session to use for querying, injected by dependency.\n\nReturns:\nstr: A confirmation message that the user's location has been updated.\n\nRaises:\nHTTPException: If there is an error updating the user's location, with status_code 422.",
+                "operationId": "update_user_location_api_v1_users__put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "title": "Response Update User Location Api V1 Users  Put"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create User",
+                "description": "Creates a new user in the database.\n\nParameters:\nreq (CreateUserDto): The incoming user data.\nsession (Session): The database session to use for querying, injected by dependency.\n\nReturns:\nUserReturnDto: Details of the created user along with an access token.\n\nRaises:\nHTTPException: If there is an error creating the user, with status_code 422.",
+                "operationId": "create_user_api_v1_users__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUserDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserReturnDto"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/users/authenticate": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Authenticate User",
+                "description": "Authenticates a user based on username and password.\n\nParameters:\nreq (user_schemas.LoginRequestDto): The login request data.\nsession (Session, optional): The database session to use for querying, injected by dependency.\n\nReturns:\nuser_schemas.UserReturnDto: Details of the authenticated user along with an access token.\n\nRaises:\nHTTPException: If user credentials could not be authenticated, with status_code 401.",
+                "operationId": "authenticate_user_api_v1_users_authenticate_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequestDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserReturnDto"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/questions/{question_count}": {
+            "get": {
+                "tags": [
+                    "questions"
+                ],
+                "summary": "Get Questions",
+                "description": "Retrieves a specified number of questions from the database, limited by a maximum value.\n\nParameters:\nquestion_count (int): The number of questions to retrieve.\nsession (Session): The database session to use for querying, injected by dependency.\nlimit (int, optional): The maximum number of questions to retrieve. Default is 5.\n\nReturns:\nlist: A list of questions in the form of ExistingQuestion schemas.\n\nRaises:\nHTTPException: If there is an error retrieving the questions, with status_code 422.",
+                "operationId": "get_questions_api_v1_questions__question_count__get",
+                "parameters": [
+                    {
+                        "name": "question_count",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Question Count"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 5,
+                            "title": "Limit"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ExistingQuestion"
+                                    },
+                                    "title": "Response Get Questions Api V1 Questions  Question Count  Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/questions/": {
+            "post": {
+                "tags": [
+                    "questions"
+                ],
+                "summary": "Ask Question",
+                "description": "Creates a new question in the database and posts it to an AI API.\n\nParameters:\nreq (question_schemas.IncomingQuestion): The incoming question data.\nsession (Session, optional): The database session to use for querying, injected by dependency.\n\nReturns:\nstr: A confirmation message that the question has been posted to the AI API.\n\nRaises:\nHTTPException: If there is an error creating the question, with status_code 422.",
+                "operationId": "ask_question_api_v1_questions__post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/IncomingQuestion"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "title": "Response Ask Question Api V1 Questions  Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/questions/{question_id}": {
+            "delete": {
+                "tags": [
+                    "questions"
+                ],
+                "summary": "Get Questions",
+                "description": "Deletes a question from the database based on its ID.\n\nParameters:\nquestion_id (int): The ID of the question to delete.\nsession (Session, optional): The database session to use for querying, injected by dependency.\n\nReturns:\nstr: A confirmation message that the question has been successfully deleted.\n\nRaises:\nHTTPException: If there is an error deleting the question, with status_code 422.",
+                "operationId": "get_questions_api_v1_questions__question_id__delete",
+                "parameters": [
+                    {
+                        "name": "question_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Question Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "title": "Response Get Questions Api V1 Questions  Question Id  Delete"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/weather/forecast": {
+            "get": {
+                "tags": [
+                    "weather"
+                ],
+                "summary": "Get Weather Forecast",
+                "description": "Retrieves the weather forecast for a location.\n\nParameters:\nlocation (str): The name of the location to get the forecast for.\ntimespan (TimeSpan): The timespan for the forecast, either 'Day' or 'Week'.\n\nReturns:\nlist: A list containing the weather forecasts.\n\nRaises:\nHTTPException: If there is an error fetching the weather forecast, with status_code 422.",
+                "operationId": "get_weather_forecast_api_v1_weather_forecast_get",
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Location"
+                        }
+                    },
+                    {
+                        "name": "timespan",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/TimeSpan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {},
+                                    "title": "Response Get Weather Forecast Api V1 Weather Forecast Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/weather/description": {
+            "get": {
+                "tags": [
+                    "weather"
+                ],
+                "summary": "Get Weather Description",
+                "description": "Retrieves the weather description for a location.\n\nParameters:\nlocation (str): The name of the location to get the weather description for.\n\nReturns:\nstr: The weather description.\n\nRaises:\nHTTPException: If there is an error fetching the weather description, with status_code 422.",
+                "operationId": "get_weather_description_api_v1_weather_description_get",
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Location"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "title": "Response Get Weather Description Api V1 Weather Description Get"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/advertisements/": {
+            "get": {
+                "tags": [
+                    "advertisements"
+                ],
+                "summary": "Get Advertisement",
+                "description": "Retrieves an advertisement for a given location.\n\nParameters:\nlocation (str): The name of the location to get the advertisement for.\nsession (Session): The database session to use for querying, injected by dependency.\n\nReturns:\nAdvertisementDto: The advertisement details for the given location.\n\nRaises:\nHTTPException: If no advertisements are found, with status_code 404.",
+                "operationId": "get_advertisement_api_v1_advertisements__get",
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Location"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdvertisementDto"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "summary": "Read Root",
+                "operationId": "read_root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/docs": {
+            "get": {
+                "summary": "Read Docs",
+                "operationId": "read_docs_docs_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AdvertisementDto": {
+                "properties": {
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    },
+                    "company": {
+                        "type": "string",
+                        "title": "Company"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "title": "Image Url"
+                    },
+                    "display_type": {
+                        "type": "boolean",
+                        "title": "Display Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "location",
+                    "company",
+                    "image_url",
+                    "display_type"
+                ],
+                "title": "AdvertisementDto"
+            },
+            "CreateUserDto": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "title": "Firstname"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "Lastname"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "firstname",
+                    "lastname",
+                    "password",
+                    "location"
+                ],
+                "title": "CreateUserDto"
+            },
+            "ExistingQuestion": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "text": {
+                        "type": "string",
+                        "title": "Text"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "text"
+                ],
+                "title": "ExistingQuestion"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "IncomingQuestion": {
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "title": "Text"
+                    },
+                    "chat_history": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Chat History"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "text",
+                    "chat_history"
+                ],
+                "title": "IncomingQuestion"
+            },
+            "LoginRequestDto": {
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "title": "LoginRequestDto"
+            },
+            "TimeSpan": {
+                "type": "string",
+                "enum": [
+                    "Day",
+                    "Week"
+                ],
+                "title": "TimeSpan"
+            },
+            "UpdateUserDto": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "title": "Firstname"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "Lastname"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "username",
+                    "firstname",
+                    "lastname",
+                    "location"
+                ],
+                "title": "UpdateUserDto"
+            },
+            "UserReturnDto": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "username": {
+                        "type": "string",
+                        "title": "Username"
+                    },
+                    "firstname": {
+                        "type": "string",
+                        "title": "Firstname"
+                    },
+                    "lastname": {
+                        "type": "string",
+                        "title": "Lastname"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    },
+                    "token": {
+                        "type": "string",
+                        "title": "Token"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "username",
+                    "firstname",
+                    "lastname",
+                    "location",
+                    "token"
+                ],
+                "title": "UserReturnDto"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
